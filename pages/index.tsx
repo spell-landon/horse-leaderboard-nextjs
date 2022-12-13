@@ -19,10 +19,10 @@ export default function Home() {
       {/* Content */}
       <div className='flex flex-col justify-center items-center gap-16'>
         <div className='flex justify-center items-center flex-col gap-2'>
-          <h1 className='text-white font-bold text-5xl'>
+          <h1 className='text-white font-bold text-3xl sm:text-5xl'>
             Welcome to HorseRide
           </h1>
-          <h2 className='font-extralight text-lg text-gray-400'>
+          <h2 className='font-extralight text-md sm:text-lg text-gray-400'>
             Keep track of events, riders, and horses
           </h2>
         </div>
