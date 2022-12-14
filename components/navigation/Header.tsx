@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHorseHead } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { Button } from '../elements/Button';
 
 const Header = () => {
   return (
@@ -9,11 +10,9 @@ const Header = () => {
       <Link href='/'>
         <FontAwesomeIcon icon={faHorseHead} className='text-primary text-3xl' />
       </Link>
-      <Link
-        href='/bell-cow-rendezvous/overview'
-        className='text-white bg-secondary rounded-md shadow-sm py-3 px-6 hover:bg-secondary/90'>
+      <Button to='/bell-cow-rendezvous/overview' primary color={'secondary'}>
         Start New Ride
-      </Link>
+      </Button>
     </div>
   );
 };

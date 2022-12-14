@@ -6,6 +6,7 @@ import { InputLabel } from './elements/InputLabel';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
+import { Button } from './elements/Button';
 
 export const SignUpForm = () => {
   return (
@@ -56,11 +57,14 @@ export const SignUpForm = () => {
         </div>
 
         <div>
-          <button
+          <Button
+            fill
+            primary
+            color='primary'
             type='submit'
-            className='flex w-full justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
+            onClick={() => console.log('Signing in...')}>
             Sign in
-          </button>
+          </Button>
         </div>
       </form>
 
