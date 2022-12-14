@@ -18,7 +18,7 @@ export const Layout = ({ children }: { children: any | JSX.Element }) => {
 
       <Header />
 
-      <main className='mt-[72px]'>{children}</main>
+      <main className='mt-[64px] md:mt-[72px]'>{children}</main>
 
       {/* <footer className={styles.footer}>
         <a

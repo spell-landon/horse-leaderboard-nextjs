@@ -26,7 +26,7 @@ export const Button = ({
     <Link
       href={to}
       className={classNames(
-        `rounded-md shadow-md py-3 px-6 hover:${hover}`,
+        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base`,
         primary ? `text-white bg-${mainColor}` : '',
         secondary
           ? `text-${mainColor} bg-transparent border border-${mainColor}`
@@ -39,7 +39,7 @@ export const Button = ({
     <button
       {...rest}
       className={classNames(
-        `rounded-md shadow-md py-3 px-6 hover:${hover}`,
+        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base`,
         primary ? `text-white bg-${mainColor}` : '',
         secondary
           ? `text-${mainColor} bg-transparent border border-${mainColor}`
