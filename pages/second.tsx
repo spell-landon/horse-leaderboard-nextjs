@@ -6,7 +6,7 @@ const second = () => {
   return (
     <Layout>
       <div>
-        <p>I'm the second page!</p>
+        <p>I&apos;m the second page!</p>
         <Link href='/'>Go back home</Link>
       </div>
     </Layout>

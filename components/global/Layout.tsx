@@ -3,8 +3,11 @@ import Head from 'next/head';
 import Header from '../navigation/Header';
 import Image from 'next/image';
 import styles from '../../styles/Home.module.css';
+import useAuth from '../../hooks/useAuth';
 
 export const Layout = ({ children }: { children: any | JSX.Element }) => {
+  const { user, loading } = useAuth();
+
   return (
     <div>
       <Head>
@@ -16,7 +19,7 @@ export const Layout = ({ children }: { children: any | JSX.Element }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Header />
+      <Header user={user} loading={loading} />
 
       <main className='mt-[64px] md:mt-[72px]'>{children}</main>
 

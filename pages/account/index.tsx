@@ -1,20 +1,30 @@
-import useUser from '../lib/useUser';
 import { Layout } from '../../components/global/Layout';
+import useAuth from '../../hooks/useAuth';
+import Logout from '../../components/account/Logout';
+import { useRouter } from 'next/router';
+import { Magic } from 'magic-sdk';
+import { useEffect } from 'react';
 
 const Profile = () => {
-  // Fetch the user client-side
-  const { user } = useUser({ redirectTo: '/login' });
+  const router = useRouter();
+  const { user, loading } = useAuth();
 
-  // Server-render loading state
-  if (!user || user.isLoggedIn === false) {
-    return <h2>Loading...</h2>;
-  }
-
+  if (!loading && !user) router.push('/');
   // Once the user request finishes, show the user
+
   return (
     <Layout>
-      <h1>Your Profile</h1>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <div className='w-full max-w-5xl mx-auto flex flex-col justify-between items-start px-4 lg:px-0 py-8 gap-8'>
+        <h1 className='font-medium text-3xl text-black'>Account Page</h1>
+
+        {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
+        <div className='w-full flex flex-col'>
+          <p className='text-lg text-black/70 font-normal'>Email</p>
+          <p className='text-base text-black font-light'>{user?.email}</p>
+        </div>
+
+        <Logout user={user} />
+      </div>
     </Layout>
   );
 };

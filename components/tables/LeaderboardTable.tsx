@@ -1,20 +1,58 @@
-import React from 'react';
-import { CONTESTANTS } from '../../lib/placeholders';
+import React, { useState, useEffect } from 'react';
 import { RiderProps } from '../../types/rider';
+import EmptyTable from './EmptyTable';
+import _ from 'lodash';
+import { useRouter } from 'next/router';
+import { slugify } from '../../lib/slugify';
+import { Button } from '../elements/Button';
 
 interface LeaderboardTableProps {
   contestants: RiderProps[];
 }
-const LeaderboardTable = ({
-  contestants = CONTESTANTS,
-}: LeaderboardTableProps) => {
+const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
+  const router = useRouter();
+  console.log(router);
+  const { rideName } = router.query;
+  const [sortedContestants, setSortedContestants] = useState(contestants);
+  const [showEmpty, setShowEmpty] = useState(false);
+  // const [sorting, setSorting] = useState(false);
+
+  const riderPosition = () => {
+    const newArr = _.sortBy(sortedContestants, function (o: any) {
+      return o.horsemanshipScorecard.overallScore;
+    });
+    const reverseArr = _.reverse(newArr);
+    setSortedContestants(reverseArr);
+  };
+
+  // const toggleSorting = () => {
+  //   setSorting(!sorting);
+  // };
+
+  // const reverseSort = () => {
+  //   console.log('sorting...');
+  //   const reverse = _.reverse(sortedContestants);
+  //   setSortedContestants(reverse);
+  //   setSorting(false);
+  // };
+
+  useEffect(() => {
+    riderPosition();
+  }, []);
+
+  // useEffect(() => {
+  //   if (sorting === true) {
+  //     reverseSort();
+  //   }
+  // }, [sorting]);
+
   return (
     <div className='w-full'>
-      <div className='mt-2 flex flex-col'>
+      <div className='flex flex-col'>
         <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
             <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'>
-              <table className='min-w-full divide-y divide-gray-300'>
+              <table className='w-full divide-y divide-gray-300'>
                 <thead className='bg-gray-50'>
                   <tr>
                     <th
@@ -47,35 +85,68 @@ const LeaderboardTable = ({
                       className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'>
                       Position
                     </th>
+                    {/* <th
+                      scope='col'
+                      className=' py-2 text-left text-sm font-semibold text-gray-900 '>
+                      <button
+                        onClick={toggleSorting}
+                        className='bg-black/5 px-3 py-2 rounded-lg hover:bg-black/10'>
+                        Sort by Score
+                      </button>
+                    </th> */}
                   </tr>
                 </thead>
-                <tbody className='divide-y divide-gray-200 bg-white'>
-                  {contestants.map((contestant) => (
-                    <tr key={contestant.name}>
-                      <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
-                        {contestant.name}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {contestant.number}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {contestant.horse}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {contestant.riderScore}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {contestant.horseScore}
-                      </td>
-                      <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                        {contestant.position}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+                {showEmpty ? (
+                  <EmptyTable type='riders' />
+                ) : (
+                  <tbody className='divide-y divide-gray-200'>
+                    {contestants.length &&
+                      sortedContestants.map((contestant, index) => (
+                        <tr
+                          key={contestant.riderName}
+                          className='hover:bg-black/5 cursor-pointer transition'
+                          onClick={() =>
+                            router.push(
+                              `/${rideName}/contestants/${slugify(
+                                contestant.riderName
+                              )}`
+                            )
+                          }>
+                          <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
+                            {contestant.riderName}
+                          </td>
+                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                            {contestant.riderNumber}
+                          </td>
+                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                            {contestant.horseName}
+                          </td>
+                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                            {contestant.horsemanshipScorecard.overallScore}
+                          </td>
+                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                            {contestant.horsemanshipScorecard.scoreSubtotal}
+                          </td>
+                          <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                            {index + 1}
+                          </td>
+                        </tr>
+                      ))}
+
+                    {!contestants.length && <EmptyTable type='riders' />}
+                  </tbody>
+                )}
               </table>
             </div>
           </div>
+        </div>
+        <div className='w-fit ml-auto mt-6'>
+          <Button
+            secondary
+            color='secondary'
+            onClick={() => router.push('/contestants')}>
+            Take me to all contestants
+          </Button>
         </div>
       </div>
     </div>

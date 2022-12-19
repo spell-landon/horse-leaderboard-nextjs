@@ -13,6 +13,7 @@ import { Input } from '../../components/elements/Input';
 const EditRide = () => {
   const router = useRouter();
   const { rideName } = router.query;
+  console.log(rideName);
 
   return (
     <Layout>
@@ -22,8 +23,19 @@ const EditRide = () => {
           <div className='w-full max-w-5xl mx-auto flex justify-between items-center'>
             {/* Ride Info */}
             <div className='flex flex-col'>
-              <h1 className='font-bold text-2xl text-black'>{rideName}</h1>
-              <div className='font-normal text-base text-black/50 flex justify-start items-center gap-3'>
+              <div className='flex flex-col'>
+                <InputLabel htmlFor={'name'}>Event name</InputLabel>
+                <div className='mt-1'>
+                  <Input
+                    id={'name'}
+                    name={'name'}
+                    type='string'
+                    value={rideName}
+                    onChange={() => console.log('hello')}
+                  />
+                </div>
+              </div>
+              <div className='font-normal text-base text-black/50 flex justify-start items-center gap-4 mt-3'>
                 <div className='flex justify-start items-center gap-1'>
                   <div className='flex flex-col'>
                     <InputLabel htmlFor={'startDate'}>Start date</InputLabel>
@@ -64,7 +76,7 @@ const EditRide = () => {
               </div>
             </div>
             {/* Edit Ride Button */}
-            <Button primary color='primary' to='/bell-cow-rendezvous/overview'>
+            <Button primary color='primary' to={`/${rideName}`}>
               Save
             </Button>
           </div>

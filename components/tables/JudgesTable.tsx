@@ -1,4 +1,5 @@
 import React from 'react';
+import EmptyTable from './EmptyTable';
 
 const JudgesTable = ({
   data,
@@ -7,6 +8,8 @@ const JudgesTable = ({
   data: any[];
   headerLabels: string[];
 }) => {
+  console.log('JUDGE DATA: ', data);
+
   return (
     <div className='w-full'>
       <div className='mt-2 flex flex-col'>
@@ -29,13 +32,19 @@ const JudgesTable = ({
                   })}
                 </thead>
                 <tbody className='divide-y divide-gray-200 bg-white'>
-                  {data.map((person) => (
-                    <tr key={person.name}>
-                      <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
-                        {person.name}
-                      </td>
-                    </tr>
-                  ))}
+                  {data.length ? (
+                    data.map((person) => (
+                      <tr key={person}>
+                        <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>
+                          {person}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <div className='py-6'>
+                      <EmptyTable type='judges' />
+                    </div>
+                  )}
                 </tbody>
               </table>
             </div>

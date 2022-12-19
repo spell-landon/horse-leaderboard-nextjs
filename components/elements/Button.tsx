@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { classNames } from '../../lib/stylingFunctions';
 
@@ -20,16 +20,30 @@ export const Button = ({
   children,
   ...rest
 }: ButtonProps) => {
-  const mainColor = color === 'black' ? 'black/50' : color;
+  const selectColor = (color: string) => {
+    if (color === 'primary') {
+      return 'primary';
+    } else if (color === 'secondary') {
+      return 'secondary';
+    } else if (color === 'black') {
+      return 'black/50';
+    } else {
+      return color;
+    }
+  };
+
   const hover = color === 'black' ? 'bg-gray-50' : `bg-${color}/90`;
+
   return to ? (
     <Link
       href={to}
       className={classNames(
-        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base`,
-        primary ? `text-white bg-${mainColor}` : '',
+        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base flex justify-center items-center`,
+        primary ? `text-white bg-${selectColor(color)}` : '',
         secondary
-          ? `text-${mainColor} bg-transparent border border-${mainColor}`
+          ? `text-${selectColor(
+              color
+            )} bg-transparent border border-${selectColor(color)}`
           : '',
         fill ? 'w-full' : 'w-fit'
       )}>
@@ -39,10 +53,12 @@ export const Button = ({
     <button
       {...rest}
       className={classNames(
-        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base`,
-        primary ? `text-white bg-${mainColor}` : '',
+        `rounded-md shadow-md py-3 px-3 md:px-6 hover:${hover} text-xs md:text-base flex justify-center items-center`,
+        primary ? `text-white bg-${selectColor(color)}` : '',
         secondary
-          ? `text-${mainColor} bg-transparent border border-${mainColor}`
+          ? `text-${selectColor(
+              color
+            )} bg-transparent border border-${selectColor(color)}`
           : '',
         fill ? 'w-full' : 'w-fit'
       )}>

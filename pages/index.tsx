@@ -1,8 +1,17 @@
 import Image from 'next/image';
-import { SignUpForm } from '../components/SignUpForm';
+import { SignUpForm } from '../components/account/SignUpForm';
 import { Layout } from '../components/global/Layout';
+import Script from 'next/script';
+import useAuth from '../hooks/useAuth';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  // If logged in, reroute to /events
+  if (user && !loading) router.push('/events');
+
   return (
     <Layout>
       <div className='flex justify-center items-center h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] w-screen'>
@@ -19,15 +28,13 @@ export default function Home() {
         <div className='-z-[1] h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] w-full bg-gradient-to-b from-black via-black to-transparent absolute'></div>
         {/* Content */}
         <div className='flex flex-col justify-center items-center gap-16'>
-          <div className='flex justify-center items-center flex-col gap-2'>
-            <h1 className='text-white font-bold text-3xl sm:text-5xl'>
-              Welcome to HorseRide
-            </h1>
-            <h2 className='font-extralight text-md sm:text-lg text-gray-400'>
-              Keep track of events, riders, and horses
-            </h2>
-          </div>
           <SignUpForm />
+          {/* <Script
+            src='https://auth.magic.link/pnp/login'
+            data-magic-publishable-api-key={
+              process.env.NEXT_PUBLIC_MAGIC_PUB_KEY
+            }
+          /> */}
         </div>
       </div>
     </Layout>
