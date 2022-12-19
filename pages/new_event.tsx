@@ -7,6 +7,7 @@ import { VET_JUDGES, HSP_JUDGES } from '../lib/placeholders';
 import { InputLabel } from '../components/elements/InputLabel';
 import { Input } from '../components/elements/Input';
 import useAuth from '../hooks/useAuth';
+import { slugify } from '../lib/slugify';
 
 interface NewEventProps {
   name: string;
@@ -53,6 +54,7 @@ const NewEvent = () => {
   const addNewVetJudge = () => {};
 
   const handleSubmit = async (e: any) => {
+    console.log(slugify(newEvent.name));
     e.preventDefault();
     //if either part of the form isn't filled out
     //set an error message and exit
@@ -65,6 +67,10 @@ const NewEvent = () => {
         method: 'POST',
         body: JSON.stringify({
           ...newEvent,
+          slug: {
+            _type: 'slug',
+            current: `${slugify(newEvent.name)}`,
+          },
           user: user.email,
         }),
       });
@@ -97,6 +103,11 @@ const NewEvent = () => {
                     type='string'
                     value={newEvent.name}
                     onChange={handleChange}
+                    placeholder={nameErrMessage ? nameErrMessage : ''}
+                    onFocus={() => setNameErrMessage('')}
+                    className={`placeholder:text-red-500 ${
+                      nameErrMessage && 'border-red-500'
+                    }`}
                   />
                 </div>
               </div>
@@ -123,6 +134,7 @@ const NewEvent = () => {
                       type='date'
                       value={newEvent.endDate}
                       onChange={handleChange}
+                      className='text-black'
                     />
                   </div>
                 </div>

@@ -24,13 +24,11 @@ const Overview = () => {
   const { rideName } = router.query;
 
   const [event, setEvent] = useState<EventProps[] | null>(null);
-  const mainEvent = event !== null && event![0];
 
   const fetchevent = async () => {
-    let fetchedEvent;
     if (user && !loading) {
       console.log('there is a user');
-      fetchedEvent = await client.fetch(
+      const fetchedEvent = await client.fetch(
         `*[_type=='event' && userEmail==$userEmail && slug.current==$slug]{
           ...,
           'riders': riders[]{
@@ -47,11 +45,12 @@ const Overview = () => {
           slug: rideName,
         }
       );
-      setEvent(fetchedEvent);
+
+      setEvent(fetchedEvent[0]);
     }
     if (!user && !loading) {
       console.log('no user!');
-      fetchedEvent = await client.fetch(
+      const fetchedEvent = await client.fetch(
         `*[_type=='event' && slug.current==$slug]{
             ...,
             'riders': riders[]{
@@ -67,20 +66,19 @@ const Overview = () => {
           slug: rideName,
         }
       );
-      setEvent(fetchedEvent);
+      setEvent(fetchedEvent[0]);
     }
   };
 
   useEffect(() => {
-    if (rideName) {
-      fetchevent();
-    }
-  }, [loading, user, rideName]);
+    fetchevent();
+  }, [rideName]);
+
   useEffect(() => {
     console.log(event);
   }, [event]);
 
-  if (event === null) return null;
+  if (!event) return null;
   if (loading) return <EmptyList />;
 
   return (
@@ -92,21 +90,21 @@ const Overview = () => {
             {/* Ride Info */}
             <div className='flex flex-col'>
               <h1 className='font-bold text-2xl text-black capitalize'>
-                {mainEvent?.name}
+                {event?.name}
               </h1>
               <div className='font-normal text-base text-black/50 flex flex-col md:flex-row justify-start items-start md:items-center gap-1 md:gap-3'>
                 <div className='flex flex-col md:flex-row justify-start items-start md:items-center gap-1'>
                   <div className='flex gap-1'>
                     <p className='md:hidden'>Start: </p>
                     <p className='text-black'>
-                      {moment(mainEvent?.startDate).format('LL')}
+                      {moment(event?.startDate).format('LL')}
                     </p>
                   </div>
                   <span className='hidden md:block'> - </span>
                   <div className='flex gap-1'>
                     <p className='md:hidden'>End: </p>
                     <p className='text-black'>
-                      {moment(mainEvent?.endDate).format('LL')}
+                      {moment(event?.endDate).format('LL')}
                     </p>
                   </div>
                 </div>
@@ -116,7 +114,7 @@ const Overview = () => {
                 />
                 <div className='flex gap-1'>
                   <p>Region </p>
-                  <p className='text-black'>{mainEvent?.region}</p>
+                  <p className='text-black'>{event?.region}</p>
                 </div>
               </div>
             </div>
@@ -133,11 +131,11 @@ const Overview = () => {
             <h2 className='font-medium text-lg text-black/80'>Judges</h2>
             <div className='w-full flex flex-col md:flex-row gap-4 items-start'>
               <JudgesTable
-                data={mainEvent?.judges.vet}
+                data={event?.judges.vet}
                 headerLabels={['Vet Judges']}
               />
               <JudgesTable
-                data={mainEvent?.judges.hsp}
+                data={event?.judges.hsp}
                 headerLabels={['HSP Judges']}
               />
             </div>
@@ -146,7 +144,7 @@ const Overview = () => {
           <div>
             <h2 className='font-medium text-lg text-black/80'>Leaderboard</h2>
             <div className='w-full flex flex-col md:flex-row gap-4 items-center'>
-              <LeaderboardTable contestants={mainEvent?.riders} />
+              <LeaderboardTable contestants={event?.riders} />
             </div>
           </div>
         </div>

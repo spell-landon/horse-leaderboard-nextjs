@@ -6,7 +6,7 @@ import { makeTitle } from '../../../lib/makeTitle';
 import ContestantList from '../../../components/lists/ContestantList';
 import ContestantDetails from '../../../components/ContestantDetails';
 
-const Contestants = () => {
+const ContestantsIndex = () => {
   const router = useRouter();
   const { contestant, rideName } = router.query;
   const [activeRide, setActiveRide] = useState(null);
@@ -22,7 +22,6 @@ const Contestants = () => {
   };
 
   const fetchRide = async () => {
-    if (!rideName) return null;
     const fetchedEvent = await client.fetch(
       `*[_type=='event' && slug.current==$slug]{
             ...,
@@ -43,16 +42,15 @@ const Contestants = () => {
   };
 
   useEffect(() => {
-    fetchRide().then(() => fetchContestant());
-  }, [rideName, contestant]);
+    fetchRide();
+    fetchContestant();
+  }, [router]);
 
   useEffect(() => {
     if (activeRide) {
       setRiders(activeRide[0].riders);
     }
   }, [activeRide]);
-
-  if (!activeRide || !activeContestant) return null;
 
   return (
     <Layout>
@@ -72,4 +70,4 @@ const Contestants = () => {
   );
 };
 
-export default Contestants;
+export default ContestantsIndex;

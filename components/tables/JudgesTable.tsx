@@ -14,9 +14,9 @@ const JudgesTable = ({
     <div className='w-full'>
       <div className='mt-2 flex flex-col'>
         <div className='-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-          <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
+          <div className='inline-block w-full py-2 align-middle md:px-6 lg:px-8'>
             <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg'>
-              <table className='min-w-full divide-y divide-gray-300'>
+              <table className='w-full divide-y divide-gray-300'>
                 <thead className='bg-gray-50'>
                   {headerLabels.map((label, index) => {
                     const key = `label-${index}`;
@@ -32,7 +32,7 @@ const JudgesTable = ({
                   })}
                 </thead>
                 <tbody className='divide-y divide-gray-200 bg-white'>
-                  {data.length ? (
+                  {data?.length ? (
                     data.map((person) => (
                       <tr key={person}>
                         <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6'>

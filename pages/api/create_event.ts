@@ -6,6 +6,7 @@ export default async function handler(req, res) {
       //this JSON arrives as a string,
       //so we turn it into a JS object with JSON.parse()
       const newEvent = await JSON.parse(req.body);
+      console.log(newEvent);
       //then use the Sanity client to create a new todo doc
       try {
         await client
@@ -17,6 +18,7 @@ export default async function handler(req, res) {
             region: newEvent.region,
             judges: newEvent.judges,
             riders: newEvent.riders,
+            slug: newEvent.slug,
             userEmail: newEvent.user,
           })
           .then((res) => {

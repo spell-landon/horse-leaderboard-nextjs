@@ -10,6 +10,7 @@ import { Magic } from 'magic-sdk';
 const Header = ({ user, loading }: any) => {
   const router = useRouter();
   const { pathname } = router;
+  const { rideName } = router.query;
 
   const [selected, setSelected] = useState<string | undefined>('');
   if (loading) return null;
@@ -36,17 +37,19 @@ const Header = ({ user, loading }: any) => {
               )}>
               All Events
             </Link>
-            <Link
-              href={`/contestants`}
-              onClick={() => setSelected('contestants')}
-              className={classNames(
-                'rounded-md shadow-md py-3 px-3 md:px-6 hover:bg-[#303030] text-white text-xs md:text-base',
-                selected === 'contestants' || pathname === '/contestants'
-                  ? 'bg-[#121212]'
-                  : 'bg-[#292929]'
-              )}>
-              Contestants
-            </Link>
+            {rideName && (
+              <Link
+                href={`/${rideName}/contestants`}
+                onClick={() => setSelected('contestants')}
+                className={classNames(
+                  'rounded-md shadow-md py-3 px-3 md:px-6 hover:bg-[#303030] text-white text-xs md:text-base',
+                  selected === 'contestants' || pathname === '/contestants'
+                    ? 'bg-[#121212]'
+                    : 'bg-[#292929]'
+                )}>
+                Contestants
+              </Link>
+            )}
           </div>
         )}
       </div>

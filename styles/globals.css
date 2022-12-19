@@ -59,3 +59,7 @@ a {
   border-radius: 1em;
   overflow-x: auto;
 }
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

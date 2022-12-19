@@ -1,8 +1,10 @@
 export interface RiderProps {
-  name: string;
-  number: number;
-  horse: string;
-  riderScore: number;
-  horseScore: number;
-  position: number;
+  class: string;
+  division: string;
+  horseAge: string;
+  horseBreed: string;
+  horseName: string;
+  riderName: string;
+  riderNumber: string;
+  type: string;
 }

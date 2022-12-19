@@ -19,7 +19,7 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
 
   const riderPosition = () => {
     const newArr = _.sortBy(sortedContestants, function (o: any) {
-      return o.horsemanshipScorecard.overallScore;
+      return o.horsemanshipScorecard?.overallScore;
     });
     const reverseArr = _.reverse(newArr);
     setSortedContestants(reverseArr);
@@ -38,6 +38,9 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
 
   useEffect(() => {
     riderPosition();
+    if (!contestants.length || contestants[0].riderName === '') {
+      setShowEmpty(true);
+    }
   }, []);
 
   // useEffect(() => {
@@ -45,6 +48,7 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
   //     reverseSort();
   //   }
   // }, [sorting]);
+  console.log(contestants.length);
 
   return (
     <div className='w-full'>
@@ -100,7 +104,7 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
                   <EmptyTable type='riders' />
                 ) : (
                   <tbody className='divide-y divide-gray-200'>
-                    {contestants.length &&
+                    {contestants?.length &&
                       sortedContestants.map((contestant, index) => (
                         <tr
                           key={contestant.riderName}
@@ -122,10 +126,10 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
                             {contestant.horseName}
                           </td>
                           <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            {contestant.horsemanshipScorecard.overallScore}
+                            {contestant.horsemanshipScorecard?.overallScore}
                           </td>
                           <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            {contestant.horsemanshipScorecard.scoreSubtotal}
+                            {contestant.horsemanshipScorecard?.scoreSubtotal}
                           </td>
                           <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                             {index + 1}
@@ -133,7 +137,10 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
                         </tr>
                       ))}
 
-                    {!contestants.length && <EmptyTable type='riders' />}
+                    {!contestants?.length ||
+                      (contestants[0].riderName === '' && (
+                        <EmptyTable type='riders' />
+                      ))}
                   </tbody>
                 )}
               </table>
