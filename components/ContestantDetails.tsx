@@ -5,6 +5,7 @@ import { Tab } from '@headlessui/react';
 import { TAB_LABELS } from '../lib/contants';
 import { classNames } from '../lib/stylingFunctions';
 import Link from 'next/link';
+import HorsemanshipScorecard from './HorsemanshipScorecard';
 
 const ContestantDetails = ({
   event,
@@ -20,7 +21,7 @@ const ContestantDetails = ({
   if (!contestant) return null;
 
   return (
-    <div className='h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] w-full bg-white text-black p-4'>
+    <div className='h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] w-full bg-white text-black p-4 overflow-y-scroll'>
       {/* Header */}
       <div className='w-full flex justify-between items-baseline mb-4'>
         <h1 className='text-2xl'>{riderName}</h1>
@@ -54,7 +55,9 @@ const ContestantDetails = ({
           })}
         </Tab.List>
         <Tab.Panels>
-          <Tab.Panel>Rider Stuff</Tab.Panel>
+          <Tab.Panel>
+            <HorsemanshipScorecard />
+          </Tab.Panel>
           <Tab.Panel>Horse Stuff</Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

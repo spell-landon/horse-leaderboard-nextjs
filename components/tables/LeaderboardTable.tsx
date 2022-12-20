@@ -151,7 +151,11 @@ const LeaderboardTable = ({ contestants }: LeaderboardTableProps) => {
           <Button
             secondary
             color='secondary'
-            onClick={() => router.push('/contestants')}>
+            onClick={() =>
+              router.push(
+                `/${rideName}/contestants/${slugify(contestants[0].riderName)}`
+              )
+            }>
             Take me to all contestants
           </Button>
         </div>
