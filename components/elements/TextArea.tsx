@@ -7,19 +7,19 @@ const TextArea = ({
   subText,
   value,
   onChange,
-  editedContestant,
 }: {
   htmlFor: string;
   label: string;
   subText: string;
   value: string;
   onChange: (e: any) => void;
-  editedContestant: any;
 }) => {
   return (
     <div className='flex flex-col w-full'>
       <InputLabel htmlFor={htmlFor}>{label}</InputLabel>
-      <span className='text-sm text-black/50 font-normal'>{subText}</span>
+      <span className='text-sm text-black/50 font-normal capitalize'>
+        {subText}
+      </span>
       <div className='mt-1'>
         <textarea
           id={htmlFor}

@@ -1,17 +1,32 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import _ from 'lodash';
+
+type Options = {
+  id: number;
+  name: string;
+};
 
 function ListboxSelect({
   name,
   options,
   onChange,
+  initialValue,
 }: {
   name: string;
-  options: any[];
+  options: Options[];
   onChange: (e: any) => void;
+  initialValue: string;
 }) {
   const [selected, setSelected] = useState(options[0]);
+
+  // Set selected to initial value on load
+  useEffect(() => {
+    const findInitial = _.find(options, { name: initialValue }) || 0;
+    const initialId = findInitial.id;
+    setSelected({ id: initialId, name: initialValue });
+  }, [initialValue]);
 
   const handleChange = (e: any) => {
     setSelected(e);

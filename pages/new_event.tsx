@@ -63,7 +63,7 @@ const NewEvent = () => {
     } else {
       //otherwise send the todo to our api
       // (we'll make this next!)
-      const createEvent = await fetch('/api/create_event', {
+      const createEvent = await fetch('/api/events', {
         method: 'POST',
         body: JSON.stringify({
           ...newEvent,
