@@ -29,24 +29,25 @@ const ContestantList = ({
           <ArrowBackIcon className='h-5 w-5' />
           Back to event
         </Link>
-        {riders?.map((rider) => {
-          const isActive = rider?.riderName === activeRider[0]?.riderName;
-          return (
-            <button
-              onClick={() =>
-                router.push(
-                  `/${rideName}/contestants/${slugify(rider?.riderName)}`
-                )
-              }
-              key={rider._id}
-              className={classNames(
-                `py-2 w-full rounded-lg border transition hover:bg-[#303030]`,
-                isActive ? 'border-primary' : 'border-[#292929]'
-              )}>
-              {rider?.riderName}
-            </button>
-          );
-        })}
+        {riders &&
+          riders?.map((rider) => {
+            const isActive = rider?.riderName === activeRider[0]?.riderName;
+            return (
+              <button
+                onClick={() =>
+                  router.push(
+                    `/${rideName}/contestants/${slugify(rider?.riderName)}`
+                  )
+                }
+                key={rider._id}
+                className={classNames(
+                  `py-2 w-full rounded-lg border transition hover:bg-[#303030] text-white`,
+                  isActive ? 'border-primary' : 'border-[#292929]'
+                )}>
+                {rider?.riderName}
+              </button>
+            );
+          })}
       </div>
       <Button primary color='primary' fill>
         <AddIcon className='-ml-1 mr-2 h-5 w-5' aria-hidden='true' />

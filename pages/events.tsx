@@ -26,9 +26,9 @@ const Events = () => {
       fetchedEvents = await client.fetch(
         `*[_type=='event']{
         _id, endDate, judges, name, region, startDate,
-        "riders": *[_type=='rider' && references(^._id)]{
-          class, division, horseAge, horseBreed, horseName, riderName, riderNumber, type
-        }
+        'riders': riders[]{
+            _type=='reference' => @-> 
+        },
       }`,
         {}
       );
@@ -39,6 +39,8 @@ const Events = () => {
   useEffect(() => {
     fetchEvents();
   }, [loading, user]);
+
+  console.log(events);
 
   return (
     <Layout>

@@ -24,34 +24,33 @@ const Header = ({ user, loading }: any) => {
             className='text-primary text-3xl'
           />
         </Link>
-        {pathname !== '/' && (
-          <div className='flex justify-start items-center gap-4'>
+
+        <div className='flex justify-start items-center gap-4'>
+          <Link
+            href={`/events`}
+            onClick={() => setSelected('events')}
+            className={classNames(
+              'rounded-md shadow-md py-3 px-3 md:px-6 hover:bg-[#303030] text-white text-xs md:text-base',
+              selected === 'events' || pathname === '/events'
+                ? 'bg-[#121212]'
+                : 'bg-[#292929]'
+            )}>
+            All Events
+          </Link>
+          {rideName && (
             <Link
-              href={`/events`}
-              onClick={() => setSelected('events')}
+              href={`/${rideName}/contestants`}
+              onClick={() => setSelected('contestants')}
               className={classNames(
                 'rounded-md shadow-md py-3 px-3 md:px-6 hover:bg-[#303030] text-white text-xs md:text-base',
-                selected === 'events' || pathname === '/events'
+                selected === 'contestants' || pathname === '/contestants'
                   ? 'bg-[#121212]'
                   : 'bg-[#292929]'
               )}>
-              All Events
+              Contestants
             </Link>
-            {rideName && (
-              <Link
-                href={`/${rideName}/contestants`}
-                onClick={() => setSelected('contestants')}
-                className={classNames(
-                  'rounded-md shadow-md py-3 px-3 md:px-6 hover:bg-[#303030] text-white text-xs md:text-base',
-                  selected === 'contestants' || pathname === '/contestants'
-                    ? 'bg-[#121212]'
-                    : 'bg-[#292929]'
-                )}>
-                Contestants
-              </Link>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <div className='flex justify-between items-center gap-2'>
         <Button to='/new_event' primary color='primary'>

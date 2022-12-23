@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { makeTitle } from '../../../lib/makeTitle';
 import ContestantList from '../../../components/lists/ContestantList';
 import ContestantDetails from '../../../components/ContestantDetails';
+import EmptyList from '../../../components/lists/EmptyList';
 
 const ContestantsIndex = () => {
   const router = useRouter();
@@ -52,6 +53,8 @@ const ContestantsIndex = () => {
     }
   }, [activeRide]);
 
+  console.log(activeContestant);
+
   return (
     <Layout>
       <div className='flex flex-row justify-between items-start w-screen overflow-hidden h-[calc(100vh-64px)] md:h-[calc(100vh-72px)]'>
@@ -59,11 +62,13 @@ const ContestantsIndex = () => {
           <ContestantList riders={riders} activeRider={activeContestant} />
         </div>
 
-        {activeContestant && (
+        {activeContestant?.length ? (
           <ContestantDetails
             event={rideName}
             contestant={activeContestant[0]}
           />
+        ) : (
+          <EmptyList />
         )}
       </div>
     </Layout>
