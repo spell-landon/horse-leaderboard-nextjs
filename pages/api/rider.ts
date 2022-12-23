@@ -3,10 +3,8 @@ import client from '../../lib/sanity/client';
 export default async function handler(req, res) {
   switch (req.method) {
     case 'POST':
-      //this JSON arrives as a string,
-      //so we turn it into a JS object with JSON.parse()
       const newRider = await JSON.parse(req.body);
-      //then use the Sanity client to create a new todo doc
+
       try {
         await client
           .create({
@@ -37,10 +35,11 @@ export default async function handler(req, res) {
       break;
 
     case 'PUT':
+      console.log('PUT');
       const updatedRider = await JSON.parse(req.body);
       const result = await client
         .patch(updatedRider.id)
-        .setIfMissing({
+        .set({
           _type: 'rider',
           class: updatedRider.class,
           division: updatedRider.division,
@@ -52,9 +51,16 @@ export default async function handler(req, res) {
           type: updatedRider.type,
           slug: updatedRider.slug,
         })
-        .commit();
+        .commit()
+        .then((newRider) => {
+          console.log('WOOHOO');
+          console.log(newRider);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       res.status(200).json({
-        status: result.riderName,
+        status: result?.riderName,
       });
 
       break;

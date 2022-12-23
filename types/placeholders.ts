@@ -1,0 +1,56 @@
+export const RIDER = {
+  _key: '',
+  _createdA: '',
+  _id: '',
+  _rev: '',
+  _type: '',
+  _updatedAt: '',
+  class: '',
+  division: '',
+  horseAge: '',
+  horseBreed: '',
+  horseName: '',
+  horsemanshipScorecard: {
+    _createdAt: '',
+    _id: '',
+    _rev: '',
+    _type: '',
+    _updatedAt: '',
+    overallScore: '',
+    penalty: {
+      penaltyPointExplanation: '',
+      penaltyPoints: '',
+    },
+    qualifiers: {
+      form: {
+        formScore: '',
+        trailEquitation: '',
+      },
+      general: {
+        generalScore: '',
+        grooming: '',
+        inHandPresentation: '',
+        tackAndEquipment: '',
+      },
+      trail: {
+        stabling: '',
+        trailCare: '',
+        trailSafetyAndCourtesy: '',
+        trailScore: '',
+      },
+    },
+    riderName: {
+      _key: '',
+      _ref: '',
+      _type: '',
+    },
+    scoreSubtotal: '',
+  } || {
+    _key: '',
+    _ref: '',
+    _type: '',
+  },
+  riderName: '',
+  riderNumber: '',
+  type: '',
+};

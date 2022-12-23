@@ -10,11 +10,14 @@ import HorsemanshipScorecard from './HorsemanshipScorecard';
 const ContestantDetails = ({
   event,
   contestant,
+  eventId,
+  activeRide,
 }: {
   event: string | string[] | undefined;
   contestant: RiderProps;
+  eventId: string;
+  activeRide: any;
 }) => {
-  console.log(contestant);
   const [tab, setTab] = useState(0);
   const riderName = contestant?.riderName;
 
@@ -41,22 +44,22 @@ const ContestantDetails = ({
           {TAB_LABELS.map((label, index) => {
             return (
               <Tab key={`label_${index}`}>
-                <button
+                <span
                   className={classNames(
-                    'text-black/50 text-lg',
+                    'text-black/50 text-lg pb-[2.5px]',
                     index === tab
                       ? 'text-secondary border-b-2 border-secondary'
                       : ''
                   )}>
                   {label}
-                </button>
+                </span>
               </Tab>
             );
           })}
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel>
-            <HorsemanshipScorecard />
+            <HorsemanshipScorecard eventId={eventId} activeRide={activeRide} />
           </Tab.Panel>
           <Tab.Panel>Horse Stuff</Tab.Panel>
         </Tab.Panels>

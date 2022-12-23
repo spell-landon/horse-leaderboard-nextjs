@@ -65,6 +65,8 @@ const Contestants = () => {
           <ContestantDetails
             event={rideName}
             contestant={activeContestant[0]}
+            eventId={activeRide[0]._id}
+            activeRide={activeRide}
           />
         )}
       </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { EventProps } from '../types/event';
+import { EventProps } from '../types/rider';
 import client from '../lib/sanity/client';
 import EmptyList from '../components/elements/EmptyList';
 import { Layout } from '../components/global/Layout';
@@ -55,7 +55,7 @@ const Events = () => {
                       <th
                         scope='col'
                         className='py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6'>
-                        Event Name
+                        Ride Name
                       </th>
                       <th
                         scope='col'

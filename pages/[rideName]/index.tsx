@@ -12,7 +12,7 @@ import EmptyList from '../../components/elements/EmptyList';
 import client from '../../lib/sanity/client';
 import useAuth from '../../hooks/useAuth';
 // Types
-import { EventProps } from '../../types/event';
+import { EventProps } from '../../types/rider';
 // Dependencies
 import moment from 'moment';
 // MUI Icons
@@ -142,7 +142,9 @@ const Overview = () => {
           </div>
           {/* Leaderboard */}
           <div>
-            <h2 className='font-medium text-lg text-black/80'>Leaderboard</h2>
+            <h2 className='font-medium text-lg text-black/80 mb-2'>
+              Leaderboard
+            </h2>
             <div className='w-full flex flex-col md:flex-row gap-4 items-center'>
               <LeaderboardTable contestants={event?.riders} />
             </div>

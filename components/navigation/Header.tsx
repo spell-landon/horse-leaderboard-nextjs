@@ -35,7 +35,7 @@ const Header = ({ user, loading }: any) => {
                 ? 'bg-[#121212]'
                 : 'bg-[#292929]'
             )}>
-            All Events
+            All Rides
           </Link>
           {rideName && (
             <Link

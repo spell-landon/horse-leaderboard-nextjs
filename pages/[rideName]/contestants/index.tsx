@@ -45,7 +45,7 @@ const ContestantsIndex = () => {
   useEffect(() => {
     fetchRide();
     fetchContestant();
-  }, [router]);
+  }, [router, rideName]);
 
   useEffect(() => {
     if (activeRide) {
@@ -54,11 +54,12 @@ const ContestantsIndex = () => {
   }, [activeRide]);
 
   console.log(activeContestant);
+  console.log(activeRide);
 
   return (
     <Layout>
       <div className='flex flex-row justify-between items-start w-screen overflow-hidden h-[calc(100vh-64px)] md:h-[calc(100vh-72px)]'>
-        <div className='w-full max-w-[200px] bg-[#292929] h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] p-4'>
+        <div className='w-full max-w-[300px] bg-[#292929] h-[calc(100vh-64px)] md:h-[calc(100vh-72px)] p-4'>
           <ContestantList riders={riders} activeRider={activeContestant} />
         </div>
 
@@ -66,6 +67,8 @@ const ContestantsIndex = () => {
           <ContestantDetails
             event={rideName}
             contestant={activeContestant[0]}
+            eventId={activeRide._id}
+            activeRide={activeRide}
           />
         ) : (
           <EmptyList />

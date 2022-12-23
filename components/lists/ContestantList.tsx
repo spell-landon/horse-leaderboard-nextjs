@@ -18,13 +18,11 @@ const ContestantList = ({
   const router = useRouter();
   const { rideName } = router.query;
 
-  console.log(activeRider);
-
   return (
     <div className='flex flex-col justify-between items-center w-full h-full'>
       <div className='flex flex-col justify-start w-full h-full gap-2 overflow-y-hidden'>
         <Link
-          href='#'
+          href={`/${rideName}`}
           className='mb-8 text-white/50 hover:text-white flex w-full justify-start items-center gap-2 transition'>
           <ArrowBackIcon className='h-5 w-5' />
           Back to event

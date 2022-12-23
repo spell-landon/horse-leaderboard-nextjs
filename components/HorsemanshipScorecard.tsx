@@ -5,20 +5,35 @@ import { useRouter } from 'next/router';
 import { InputLabel } from './elements/InputLabel';
 import { Input } from './elements/Input';
 import ListboxSelect from './elements/ListboxSelect';
-import { RiderClass, RiderDivision, RiderTypes } from '../types/rider';
+import {
+  RiderClass,
+  RiderDivision,
+  RiderProps,
+  RiderTypes,
+} from '../types/rider';
 import TextArea from './elements/TextArea';
 import { Button } from './elements/Button';
 import { slugify } from '../lib/slugify';
 import useAuth from '../hooks/useAuth';
+import { RIDER } from '../types/placeholders';
+import _ from 'lodash';
 
-const HorsemanshipScorecard = () => {
+const HorsemanshipScorecard = ({
+  eventId,
+  activeRide,
+}: {
+  eventId: string;
+  activeRide: any;
+}) => {
   const router = useRouter();
   // Get contestant name from router query
   const { rideName, contestant } = router.query;
   // Set activeContestant
   const [activeContestant, setActiveContestant] = useState(null);
   // Set new edited Contestant that will be submitted to update Sanity CMS
-  const [editedContestant, setEditedContestant] = useState(null);
+  const [editedContestant, setEditedContestant] = useState<RiderProps>(RIDER);
+  // Saving state for the Save Changes button
+  const [saving, setSaving] = useState<boolean>(false);
 
   //   Fetch the contestant from the router.query onload
   const fetchContestant = async () => {
@@ -57,16 +72,16 @@ const HorsemanshipScorecard = () => {
     });
   };
 
-  // Handle editedContestant.horsemanshipScorecard.qualifiers.general changes
+  // Handle editedContestant.horsemanshipScorecard?.qualifiers.general changes
   const handleGeneral = (e: any) => {
     setEditedContestant({
       ...editedContestant,
       horsemanshipScorecard: {
         ...editedContestant.horsemanshipScorecard,
         qualifiers: {
-          ...editedContestant.horsemanshipScorecard.qualifiers,
+          ...editedContestant.horsemanshipScorecard?.qualifiers,
           general: {
-            ...editedContestant.horsemanshipScorecard.qualifiers.general,
+            ...editedContestant.horsemanshipScorecard?.qualifiers.general,
             [e.target.id]: e.target.value,
           },
         },
@@ -74,16 +89,16 @@ const HorsemanshipScorecard = () => {
     });
   };
 
-  // Handle editedContestant.horsemanshipScorecard.qualifiers.form
+  // Handle editedContestant.horsemanshipScorecard?.qualifiers.form
   const handleForm = (e: any) => {
     setEditedContestant({
       ...editedContestant,
       horsemanshipScorecard: {
         ...editedContestant.horsemanshipScorecard,
         qualifiers: {
-          ...editedContestant.horsemanshipScorecard.qualifiers,
+          ...editedContestant.horsemanshipScorecard?.qualifiers,
           form: {
-            ...editedContestant.horsemanshipScorecard.qualifiers.form,
+            ...editedContestant.horsemanshipScorecard?.qualifiers.form,
             [e.target.id]: e.target.value,
           },
         },
@@ -91,16 +106,16 @@ const HorsemanshipScorecard = () => {
     });
   };
 
-  // Handle editedContestant.horsemanshipScorecard.qualifiers.trail
+  // Handle editedContestant.horsemanshipScorecard?.qualifiers.trail
   const handleTrail = (e: any) => {
     setEditedContestant({
       ...editedContestant,
       horsemanshipScorecard: {
         ...editedContestant.horsemanshipScorecard,
         qualifiers: {
-          ...editedContestant.horsemanshipScorecard.qualifiers,
+          ...editedContestant.horsemanshipScorecard?.qualifiers,
           trail: {
-            ...editedContestant.horsemanshipScorecard.qualifiers.trail,
+            ...editedContestant.horsemanshipScorecard?.qualifiers.trail,
             [e.target.id]: e.target.value,
           },
         },
@@ -108,14 +123,14 @@ const HorsemanshipScorecard = () => {
     });
   };
 
-  // Handle editedContestant.horsemanshipScorecard.penalty
+  // Handle editedContestant.horsemanshipScorecard?.penalty
   const handlePenalty = (e: any) => {
     setEditedContestant({
       ...editedContestant,
       horsemanshipScorecard: {
         ...editedContestant.horsemanshipScorecard,
         penalty: {
-          ...editedContestant.horsemanshipScorecard.penalty,
+          ...editedContestant.horsemanshipScorecard?.penalty,
           [e.target.id]: e.target.value,
         },
       },
@@ -134,67 +149,136 @@ const HorsemanshipScorecard = () => {
 
   // Calculate overall score
   const overallScore = () => {
+    let penaltyPoints = 0;
+    if (
+      editedContestant?.horsemanshipScorecard?.penalty?.penaltyPoints ===
+      undefined
+    ) {
+      penaltyPoints === 0;
+    } else {
+      penaltyPoints ===
+        editedContestant?.horsemanshipScorecard?.penalty?.penaltyPoints;
+    }
     let sum = 0;
     sum += Number(
-      editedContestant?.horsemanshipScorecard.qualifiers.form.formScore
+      editedContestant?.horsemanshipScorecard?.qualifiers.form.formScore
     );
     sum += Number(
-      editedContestant?.horsemanshipScorecard.qualifiers.general.generalScore
+      editedContestant?.horsemanshipScorecard?.qualifiers.general.generalScore
     );
     sum += Number(
-      editedContestant?.horsemanshipScorecard.qualifiers.trail.trailScore
+      editedContestant?.horsemanshipScorecard?.qualifiers.trail.trailScore
     );
-    sum -= Number(
-      editedContestant?.horsemanshipScorecard.penalty?.penaltyPoints
-    );
+    sum -= Number(penaltyPoints);
     return sum.toString();
   };
 
   const updateHorsemanshipScorecard = async (e: any) => {
     e.preventDefault();
-    console.log('Updating...', editedContestant);
-    await client
-      .fetch('/api/rider', {
-        method: 'PUT',
-        body: JSON.stringify({
-          id: editedContestant?._id,
-          class: editedContestant?.class,
-          division: editedContestant?.division,
-          horseAge: editedContestant?.horseAge,
-          horseBreed: editedContestant?.horseBreed,
-          horseName: editedContestant?.horseName,
-          riderName: editedContestant?.riderName,
-          riderNumber: editedContestant?.riderNumber,
-          type: editedContestant?.type,
-          slug: {
-            _type: 'slug',
-            current: `${slugify(editedContestant?.riderName)}`,
+    setSaving(true);
+    const updateRider = async () =>
+      await client
+        .patch(editedContestant?._id)
+        .set({
+          _type: 'rider' ?? '',
+          class: editedContestant.class ?? '',
+          division: editedContestant.division ?? '',
+          horseAge: editedContestant.horseAge ?? '',
+          horseBreed: editedContestant.horseBreed ?? '',
+          horseName: editedContestant.horseName ?? '',
+          riderName: editedContestant.riderName,
+          riderNumber: editedContestant.riderNumber ?? '',
+          type: editedContestant.type ?? '',
+        })
+        .commit()
+        .catch((err) => {
+          console.log('ERROR: ', err);
+          setSaving(false);
+        });
+
+    const { horsemanshipScorecard } = editedContestant;
+
+    const updateHorsemanshipScorecard = async () =>
+      await client
+        .patch(horsemanshipScorecard?._id)
+        .set({
+          _type: 'horsemanshipScorecard' ?? '',
+          overallScore: horsemanshipScorecard.overallScore ?? '',
+          penalty: {
+            penaltyPoints: horsemanshipScorecard.penalty.penaltyPoints ?? '',
+            penaltyPointExplanation:
+              horsemanshipScorecard.penalty.penaltyPointExplanation ?? '',
           },
-        }),
-      })
-      .then((res) => console.log(res))
-      .then(() =>
+          qualifiers: {
+            form: {
+              formScore: horsemanshipScorecard.qualifiers.form.formScore ?? '',
+              trailEquitation:
+                horsemanshipScorecard.qualifiers.form.trailEquitation ?? '',
+            },
+            general: {
+              generalScore:
+                horsemanshipScorecard.qualifiers.general.generalScore ?? '',
+              grooming: horsemanshipScorecard.qualifiers.general.grooming ?? '',
+              inHandPresentation:
+                horsemanshipScorecard.qualifiers.general.inHandPresentation ??
+                '',
+              tackAndEquipment:
+                horsemanshipScorecard.qualifiers.general.tackAndEquipment ?? '',
+            },
+            trail: {
+              stabling: horsemanshipScorecard.qualifiers.trail.stabling ?? '',
+              trailCare: horsemanshipScorecard.qualifiers.trail.trailCare ?? '',
+              trailSafetyAndCourtesy:
+                horsemanshipScorecard.qualifiers.trail.trailSafetyAndCourtesy ??
+                '',
+              trailScore:
+                horsemanshipScorecard.qualifiers.trail.trailScore ?? '',
+            },
+          },
+          scoreSubtotal: horsemanshipScorecard.scoreSubtotal ?? '',
+        })
+        .commit()
+        .then(() => {
+          setSaving(false);
+        })
+        .catch((err) => {
+          console.log('ERROR: ', err);
+          setSaving(false);
+        });
+
+    updateRider()
+      .then(() => updateHorsemanshipScorecard())
+      .finally(() =>
         router.push(
           `/${rideName}/contestants/${slugify(editedContestant?.riderName)}`
         )
       );
-    //   .then(() => {
-    //     client.fetch('/api/horsemanshipScorecard', {
-    //       method: 'PUT',
-    //       body: JSON.stringify({
-    //         id: editedContestant?._id,
-    //         overallScore: editedContestant?.overallScore,
-    //         penalty: editedContestant?.penalty,
-    //         qualifiers: editedContestant?.qualifiers,
-    //         riderName: editedContestant?.riderName,
-    //         scoreSubtotal: editedContestant?.scoreSubtotal,
-    //         slug: {
-    //           _type: 'slug',
-    //           current: `${slugify(editedContestant?.riderName)}`,
-    //         },
-    //       }),
-    //     });
-    //   });
+  };
+
+  const deleteContestant = async (e: any) => {
+    e.preventDefault();
+    const idIndex = _.findIndex(activeRide[0].riders, [
+      'riderName',
+      editedContestant.riderName,
+    ]);
+    console.log(activeRide);
+    console.log(idIndex);
+    const contestantToRemove = [`riders[${idIndex}]`];
+    const removeFromEvent = async () =>
+      await client
+        .patch(eventId)
+        .unset(contestantToRemove)
+        .commit()
+        .catch((err) => console.log(err));
+
+    const deleteRider = async () => await client.delete(editedContestant._id);
+    // .catch((err) => console.log(err));
+
+    removeFromEvent()
+      .then((res) => console.log(res))
+      .then(() => {
+        router.push(`/${rideName}/contestants`);
+      });
   };
 
   return (
@@ -270,7 +354,7 @@ const HorsemanshipScorecard = () => {
           subText='Cleanliness, proper fit, adjustment, repair, trail gear replacement
             & security'
           value={
-            editedContestant?.horsemanshipScorecard.qualifiers.general
+            editedContestant?.horsemanshipScorecard?.qualifiers.general
               .tackAndEquipment || ''
           }
           onChange={handleGeneral}
@@ -417,7 +501,7 @@ const HorsemanshipScorecard = () => {
               type='string'
               value={
                 editedContestant?.horsemanshipScorecard?.penalty
-                  ?.penaltyPoints || ''
+                  ?.penaltyPoints ?? 0
               }
               onChange={handlePenalty}
             />
@@ -445,20 +529,30 @@ const HorsemanshipScorecard = () => {
       {/* Overall Score */}
       <div className='flex justify-end items-center gap-4 w-fit ml-auto'>
         <InputLabel htmlFor={'overallScore'}>Overall Score:</InputLabel>
+
         <Input
           id={'overallScore'}
           name={'overallScore'}
           type='string'
-          value={overallScore() || ''}
+          value={overallScore() ?? ''}
           onChange={handleOverall}
           className='max-w-[4rem] text-center'
           max={30}
+          readOnly
+          disabled
         />
       </div>
 
-      <div className='flex justify-end mb-8'>
+      <div className='flex justify-end mb-8 gap-4'>
+        <Button
+          secondary
+          color='[#FF0000]'
+          className='ml-auto'
+          onClick={deleteContestant}>
+          Remove Rider From This Event
+        </Button>
         <Button primary color='primary' className='ml-auto' type='submit'>
-          Save changes
+          {saving ? 'Saving' : 'Save changes'}
         </Button>
       </div>
     </form>
